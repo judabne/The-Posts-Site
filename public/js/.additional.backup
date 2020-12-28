@@ -1,0 +1,35 @@
+function swapStyleSheet(sheet){
+    document.getElementById('sidebarstyle').setAttribute('href', "css/"+ sheet + ".css");
+    document.getElementById('selectedtheme').setAttribute('value', sheet);
+}
+
+$(document).ready(function(){
+
+    function fetch_customer_data(query = '')
+    {
+        $.ajax({
+            url:"{{ route('live_search.action') }}",
+            method: 'GET',
+            data:{"query":query},
+            dataType: 'json',
+            success: function(data){
+                $('#searchresults').html(data.name_data);
+                $('#total_records').text(data.total_data);
+            }
+        })
+    }
+
+    $('#searchbox').on('keyup', function(){
+        var query = $(this).val();
+        fetch_customer_data(query);
+
+        if (query == ''){
+            $('#searchresultsbox').hide();
+        }
+        else{
+            $('#searchresultsbox').show();
+        }
+
+    });
+
+});
